@@ -157,7 +157,7 @@ var ParallaxScroll = {
                     if (perspective == undefined) perspective = 800;
                     var $parent = $el.parent();
                     if(!$parent.data("style")) $parent.data("style", $parent.attr("style") || "");
-                    $parent.attr("style", "perspective:" + perspective + "px; -webkit-perspective:" + perspective + "px; "+ $parent.data("style"));
+                    $parent.attr("style", "perspective:" + perspective + "vh; -webkit-perspective:" + perspective + "vh; "+ $parent.data("style"));
                 }
                 if(properties["scaleX"] == undefined) properties["scaleX"] = 1;
                 if(properties["scaleY"] == undefined) properties["scaleY"] = 1;
@@ -167,7 +167,7 @@ var ParallaxScroll = {
                     properties["scaleY"] *= properties["scale"];
                     properties["scaleZ"] *= properties["scale"];
                 }
-                var translate3d = "translate3d(" + (properties["x"] ? properties["x"] : 0) + "px, " + (properties["y"] ? properties["y"] : 0) + "px, " + (properties["z"] ? properties["z"] : 0) + "px)";
+                var translate3d = "translate3d(" + (properties["x"] ? properties["x"] : 0) + "vh, " + (properties["y"] ? properties["y"] : 0) + "vh, " + (properties["z"] ? properties["z"] : 0) + "vh)";
                 var rotate3d = "rotateX(" + (properties["rotateX"] ? properties["rotateX"] : 0) + "deg) rotateY(" + (properties["rotateY"] ? properties["rotateY"] : 0) + "deg) rotateZ(" + (properties["rotateZ"] ? properties["rotateZ"] : 0) + "deg)";
                 var scale3d = "scaleX(" + properties["scaleX"] + ") scaleY(" + properties["scaleY"] + ") scaleZ(" + properties["scaleZ"] + ")";
                 var cssTransform = translate3d + " " + rotate3d + " " + scale3d + ";";
