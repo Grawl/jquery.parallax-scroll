@@ -4,7 +4,7 @@ $(function() {
 
 var ParallaxScroll = {
     /* PUBLIC VARIABLES */
-    showLogs: false,
+    showLogs: true,
     round: 1000,
 
     /* PUBLIC FUNCTIONS */
@@ -15,29 +15,24 @@ var ParallaxScroll = {
             this._inited = true;
             return;
         }
-        this._requestAnimationFrame = (function(){
-          return  window.requestAnimationFrame       || 
-                  window.webkitRequestAnimationFrame || 
-                  window.mozRequestAnimationFrame    || 
-                  window.oRequestAnimationFrame      || 
-                  window.msRequestAnimationFrame     || 
-                  function(/* function */ callback, /* DOMElement */ element){
-                      window.setTimeout(callback, 1000 / 60);
-                  };
-        })();
         this._onScroll(true);
     },
 
     /* PRIVATE VARIABLES */
+    _RAF: null,
+    _running: 0,
     _inited: false,
     _properties: ['x', 'y', 'z', 'rotateX', 'rotateY', 'rotateZ', 'scaleX', 'scaleY', 'scaleZ', 'scale'],
-    _requestAnimationFrame:null,
 
     /* PRIVATE FUNCTIONS */
     _log: function(message) {
         if (this.showLogs) console.log("Parallax Scroll / " + message);
     },
+    _stop: function() {
+        window.cancelAnimationFrame(this._RAF);
+    },
     _onScroll: function(noSmooth) {
+        this._running = 0;
         var scroll = $(document).scrollTop();
         var windowHeight = $(window).height();
         this._log("onScroll " + scroll);
@@ -152,6 +147,7 @@ var ParallaxScroll = {
                 }, this));
             }
             if (applyProperties) {
+                this._running++;
                 if (properties["z"] != undefined) {
                     var perspective = data["perspective"];
                     if (perspective == undefined) perspective = 800;
@@ -159,9 +155,9 @@ var ParallaxScroll = {
                     if(!$parent.data("style")) $parent.data("style", $parent.attr("style") || "");
                     $parent.attr("style", "perspective:" + perspective + "vh; -webkit-perspective:" + perspective + "vh; "+ $parent.data("style"));
                 }
-                if(properties["scaleX"] == undefined) properties["scaleX"] = 1;
-                if(properties["scaleY"] == undefined) properties["scaleY"] = 1;
-                if(properties["scaleZ"] == undefined) properties["scaleZ"] = 1;
+                if (properties["scaleX"] == undefined) properties["scaleX"] = 1;
+                if (properties["scaleY"] == undefined) properties["scaleY"] = 1;
+                if (properties["scaleZ"] == undefined) properties["scaleZ"] = 1;
                 if (properties["scale"] != undefined) {
                     properties["scaleX"] *= properties["scale"];
                     properties["scaleY"] *= properties["scale"];
@@ -175,11 +171,15 @@ var ParallaxScroll = {
                 $el.attr("style", "transform:" + cssTransform + " -webkit-transform:" + cssTransform + " " + style);
             }
         }, this));
-        if(window.requestAnimationFrame) {
-            window.requestAnimationFrame($.proxy(this._onScroll, this, false));
+        if (this._running === 0) {
+            this._stop();
+            return;
         }
-        else {
-            this._requestAnimationFrame($.proxy(this._onScroll, this, false));
-        }
+        this._RAF = window.requestAnimationFrame($.proxy(this._onScroll, this, false));
     }
 };
+
+$(window).on('scroll', function() {
+  if (ParallaxScroll._running) return;
+  ParallaxScroll._onScroll();
+});
