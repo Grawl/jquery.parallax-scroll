@@ -1,0 +1,29 @@
+{
+  "name": "jquery.parallax-scroll",
+  "version": "1.0.0",
+  "description": "Smooth parallax animations on vertical page scrolling using requestAnimationFrame and CSS3 3D transitions.",
+  "main": "js/jquery.parallax-scroll.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Grawl/jquery.parallax-scroll.git"
+  },
+  "keywords": [
+    "parallax",
+    "scroll",
+    "effect",
+    "css"
+  ],
+  "authors": [
+    "Matthieu \"alumbo\" Chavigny <free@matthieu.com>",
+    "Simon \"simonlc\" Laroche <hi@simon.lc>",
+    "Daniil \"grawl\" Pronin <mail@grawl.ru>"
+  ],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Grawl/jquery.parallax-scroll/issues"
+  },
+  "homepage": "https://github.com/Grawl/jquery.parallax-scroll#readme",
+  "dependencies": {
+    "jquery.easing": "^1.3.2"
+  }
+}
